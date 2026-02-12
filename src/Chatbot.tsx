@@ -1,25 +1,32 @@
-import * as React from 'react';
-import Popover from '@mui/material/Popover';
-import Fab from '@mui/material/Fab';
-import EditIcon from '@mui/icons-material/Edit';
+import * as React from "react";
+import Popover from "@mui/material/Popover";
+import Fab from "@mui/material/Fab";
+import EditIcon from "@mui/icons-material/Edit";
 import Card from "@mui/material/Card";
-import CardContent from '@mui/material/CardContent';
+import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import {Send} from "@mui/icons-material";
 import {IconButton} from "@mui/material";
 import axios from "axios";
+import ChatMessage from "./ChatMessage.tsx"
 
-interface ChatMessage {
+export interface ChatMessageType {
     content: string;
     sender: "user" | "llm"
     timestamp: number;
 }
 
+const firstMsg: ChatMessageType = {
+    sender: "llm",
+    content: "What would you like to know?",
+    timestamp: 0
+}
+
 export default function Chatbot() {
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-    const [content, setContent] = React.useState<string>('');
-    const [messages, setMessages] = React.useState<ChatMessage[]>([]);
+    const [content, setContent] = React.useState<string>("");
+    const [messages, setMessages] = React.useState<ChatMessageType[]>([firstMsg]);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -30,7 +37,7 @@ export default function Chatbot() {
     }
 
     const open = Boolean(anchorEl)
-    const id = open ? 'simple-popover' : undefined
+    const id = open ? "simple-popover" : undefined
 
     const handleSend = () => {
         if (!content) return
@@ -40,10 +47,10 @@ export default function Chatbot() {
         })
 
         axios.post("http://localhost:8001/phb-rag", {
-            q: content
+            q: content,
         }).then(res => {
             setMessages(prev => {
-                return [...prev, {content:res.data, sender: "llm", timestamp: Date.now()}]
+                return [...prev, {content: res.data, sender: "llm", timestamp: Date.now()}]
             })
         }).catch(err => {
             console.log(err)
@@ -53,16 +60,17 @@ export default function Chatbot() {
     }
 
     const handleKeyDown = (event: React.KeyboardEvent) => {
-        if (event.key === 'Enter') {
+        if (event.key === "Enter") {
             event.preventDefault()
             handleSend()
         }
     }
 
+
     return (
         <div className={"chat-fab"}>
             <Fab color="secondary" aria-label="edit" onClick={handleClick} aria-describedby={id}>
-                <EditIcon />
+                <EditIcon/>
             </Fab>
             <Popover
                 id={id}
@@ -70,35 +78,35 @@ export default function Chatbot() {
                 anchorEl={anchorEl}
                 onClose={handleClose}
                 anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
+                    vertical: "top",
+                    horizontal: "left",
                 }}
                 transformOrigin={{
                     vertical: "bottom",
-                    horizontal: 'right',
+                    horizontal: "right",
                 }}
             >
                 <Card>
-                    <CardContent sx={{width: "300px", maxHeight: "400px", overflow: "auto"}} className="chat-messages-box">
+                    <CardContent sx={{width: "300px", maxHeight: "400px", overflow: "auto"}}
+                                 className="chat-messages-box">
                         {messages.map((m) => (
-                            <div key={m.timestamp} className={m.sender === "user" ? "chat-box-user" : "chat-box-llm"}>
-                                {m.content}
-                            </div>
+                            <ChatMessage m={m} key={m.timestamp} />
                         ))}
                     </CardContent>
                     <CardActions>
-
                         <OutlinedInput
                             value={content}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setContent(event.target.value)}}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                setContent(event.target.value)
+                            }}
                             fullWidth={true}
                             size="small"
                             multiline={true}
                             maxRows={4}
                             endAdornment={
-                            <IconButton onClick={handleSend} size="small">
-                                <Send />
-                            </IconButton>}
+                                <IconButton onClick={handleSend} size="small">
+                                    <Send/>
+                                </IconButton>}
                             onKeyDown={handleKeyDown}
                         />
                     </CardActions>
