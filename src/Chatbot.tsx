@@ -46,7 +46,7 @@ export default function Chatbot() {
             return [...prev, {content, sender: "user", timestamp: Date.now()}];
         })
 
-        axios.post("http://localhost:8001/phb-rag", {
+        axios.post("http://localhost:8001/api/phb-rag", {
             q: content,
         }).then(res => {
             setMessages(prev => {
