@@ -2,7 +2,7 @@ import {useState} from "react"
 import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import axios from "axios"
-import {setToken} from "../auth.ts"
+import {setToken} from "./auth.ts"
 import {useNavigate} from "react-router"
 
 export const LoginForm = () => {

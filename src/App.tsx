@@ -1,6 +1,6 @@
 import './App.css'
-import Chatbot from "./Chatbot.tsx";
-import NavBar from "./AppBar.tsx"
+import Chatbot from "./rag-chatbot/Chatbot.tsx";
+import NavBar from "./NavBar.tsx"
 
 function App() {
   return (

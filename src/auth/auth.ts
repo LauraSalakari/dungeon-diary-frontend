@@ -9,3 +9,7 @@ export function setToken(token: string) {
 export function isAuthenticated() {
     return Boolean(getToken());
 }
+
+export function removeToken() {
+    localStorage.removeItem("token");
+}

@@ -4,8 +4,8 @@ import './index.css'
 import App from './App.tsx'
 import {createBrowserRouter, redirect} from "react-router"
 import {RouterProvider} from "react-router/dom"
-import {isAuthenticated} from "./auth.ts"
-import {Login} from "./auth-views/Login.tsx"
+import {isAuthenticated} from "./auth/auth.ts"
+import {Login} from "./auth/Login.tsx"
 
 function requireAuthLoader() {
     if (!isAuthenticated()) {
