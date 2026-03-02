@@ -9,7 +9,7 @@ import {Login} from "./auth-views/Login.tsx"
 
 function requireAuthLoader() {
     if (!isAuthenticated()) {
-        throw redirect("/login");
+        throw redirect("/");
     }
     return null;
 }

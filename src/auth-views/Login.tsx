@@ -2,15 +2,15 @@ import * as React from "react"
 import {useState} from "react"
 import {LoginForm} from "./LoginForm.tsx"
 import {RegistrationForm} from "./RegistrationForm.tsx"
-import Button from "@mui/material/Button"
 
 export const Login: React.FC = () => {
     const [loginState, setLoginState] = useState(true)
 
 
-
-    return <div style={{display: "inline-flex", flexDirection: "column"}}>
-        {loginState ? <LoginForm /> : <RegistrationForm />}
-        <Button onClick={() => setLoginState(prev => !prev)}>Login</Button>
+    return <div className="login" style={{minHeight: "100dvh", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+        <div style={{display: "inline-flex", flexDirection: "column", justifyContent: "center"}}>
+            {loginState ? <LoginForm/> : <RegistrationForm/>}
+            <a onClick={() => setLoginState(prev => !prev)} style={{fontSize: "0.8em", textAlign: "center", marginTop: 8}}>{loginState ? "Not yet registered? Click here to create an account." : "Already registered? Click here to log in."}</a>
+        </div>
     </div>
 }
