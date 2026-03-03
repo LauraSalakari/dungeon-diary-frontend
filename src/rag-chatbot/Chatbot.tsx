@@ -8,8 +8,9 @@ import CardActions from "@mui/material/CardActions";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import {Send} from "@mui/icons-material";
 import {IconButton} from "@mui/material";
-import axios from "axios";
 import ChatMessage from "./ChatMessage.tsx"
+import {getToken} from "../auth/auth.ts"
+import api from "../auth/api.ts"
 
 export interface ChatMessageType {
     content: string;
@@ -42,11 +43,14 @@ export default function Chatbot() {
     const handleSend = () => {
         if (!content) return
 
+        const token = getToken()
+        if (!token) return
+
         setMessages(prev => {
             return [...prev, {content, sender: "user", timestamp: Date.now()}];
         })
 
-        axios.post("http://localhost:8001/api/phb-rag", {
+        api.post("/api/phb-rag", {
             q: content,
         }).then(res => {
             setMessages(prev => {

@@ -1,8 +1,8 @@
 import {useState} from "react"
 import Button from "@mui/material/Button"
-import axios from "axios"
 import TextField from "@mui/material/TextField"
 import {useNavigate} from "react-router"
+import api from "./api.ts"
 
 export const RegistrationForm = () => {
     const [email, setEmail] = useState('')
@@ -15,7 +15,7 @@ export const RegistrationForm = () => {
     const register = (e: MouseEvent) => {
         e.preventDefault()
 
-        axios.post("http://localhost:8001/register", {
+        api.post("/register", {
             email: email, password: password, username: username
         }).then((res) => {
             console.log(res)

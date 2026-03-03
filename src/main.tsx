@@ -6,6 +6,7 @@ import {createBrowserRouter, redirect} from "react-router"
 import {RouterProvider} from "react-router/dom"
 import {isAuthenticated} from "./auth/auth.ts"
 import {Login} from "./auth/Login.tsx"
+import {AuthProvider} from "./auth/AuthContext.tsx"
 
 function requireAuthLoader() {
     if (!isAuthenticated()) {
@@ -36,6 +37,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
   </StrictMode>,
 )
