@@ -7,6 +7,7 @@ import {RouterProvider} from "react-router/dom"
 import {isAuthenticated} from "./auth/auth.ts"
 import {Login} from "./auth/Login.tsx"
 import {AuthProvider} from "./auth/AuthContext.tsx"
+import {CampaignProvider} from "./campaign/CampaignContext.tsx"
 
 function requireAuthLoader() {
     if (!isAuthenticated()) {
@@ -38,7 +39,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
       <AuthProvider>
-        <RouterProvider router={router} />
+          <CampaignProvider>
+             <RouterProvider router={router} />
+          </CampaignProvider>
       </AuthProvider>
   </StrictMode>,
 )

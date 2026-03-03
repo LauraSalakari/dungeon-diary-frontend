@@ -5,15 +5,20 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import {removeToken} from "./auth/auth.ts"
+import {removeToken} from "../auth/auth.ts"
 import {useNavigate} from "react-router"
+import {CampaignSelector} from "./CampaignSelector.tsx"
+import {useCampaign} from "../campaign/CampaignContext.tsx"
 
 export default function NavBar() {
 
     const navigate = useNavigate();
+    const campaign = useCampaign();
 
     const handleLogout = () => {
         removeToken()
+        localStorage.removeItem("selectedCampaign");
+        campaign?.selectCampaign(null)
         navigate('/', {replace: true})
     }
 
@@ -33,6 +38,7 @@ export default function NavBar() {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Dungeon Diary
                     </Typography>
+                    <CampaignSelector />
                     <Button color="inherit" onClick={handleLogout}>Logout</Button>
                 </Toolbar>
             </AppBar>

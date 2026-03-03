@@ -7,6 +7,7 @@ interface AuthCampaign {
     gameMaster: string,
     is_gm: boolean,
     player_name: string,
+    id: string,
 }
 
 interface AuthUser {
@@ -18,7 +19,7 @@ interface AuthUser {
 }
 
 interface AuthContext {
-    user: AuthUser | null,
+    info: AuthUser | null,
     loading: boolean,
 }
 
@@ -44,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, [])
 
     return (
-        <AuthContext.Provider value={{user, loading}}>
+        <AuthContext.Provider value={{info: user, loading}}>
             {children}
         </AuthContext.Provider>
     )

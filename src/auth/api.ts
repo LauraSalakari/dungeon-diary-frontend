@@ -20,6 +20,7 @@ api.interceptors.response.use(
     (error) => {
         if (error.response?.status === 401){
             removeToken()
+            localStorage.removeItem("selectedCampaign")
         }
         return Promise.reject(error)
     }
