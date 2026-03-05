@@ -53,10 +53,14 @@ export const SummaryContainer: React.FC<SummaryContainerProps> = (props) => {
         api.post("/api/notes-summarise", {
             campaign_id: campaign?.campaign?.id,
             session_date: dayjs(session).format("YYYY-MM-DD"),
-            contains_public: containPublic
+            contains_public: containPublic,
         }).then(res => {
             console.log(res)
-            setSummaries(prev => [...prev, res.data])
+            setSummaries(prev => [...prev, {
+                content: res.data.summary_content,
+                contains_public: res.data.contains_public,
+                session_date: res.data.session_date,
+            }])
         }).catch(err => {
             console.log(err)
         })
