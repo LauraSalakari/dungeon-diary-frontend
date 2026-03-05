@@ -24,11 +24,9 @@ export const JoinCampaign: React.FC = () => {
             password: password,
             character_name: characterName,
         }).then(res => {
-            console.log(res)
             setCampaignName(res.data.campaign_name)
             setState("success")
-        }).catch(err => {
-            console.log(err)
+        }).catch(() => {
             setState("failed")
         })
     }

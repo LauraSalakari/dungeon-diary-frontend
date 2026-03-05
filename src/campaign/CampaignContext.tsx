@@ -1,4 +1,5 @@
 import {createContext, type ReactNode, useContext, useEffect, useState} from "react"
+import api from "../auth/api.ts"
 
 interface CampaignContext {
     name: string,
@@ -7,14 +8,16 @@ interface CampaignContext {
 }
 
 interface CampaignContextType {
-    campaign: CampaignContext | null;
-    selectCampaign: (campaign: CampaignContext | null) => void;
+    campaign: CampaignContext | null
+    selectCampaign: (campaign: CampaignContext | null) => void
+    sessions: string[]
 }
 
 const CampaignContext = createContext<CampaignContextType | null>(null)
 
 export function CampaignProvider({ children }: { children: ReactNode }) {
     const [campaign, setCampaign] = useState<CampaignContext | null>(null)
+    const [sessions, setSessions] = useState<string[]>([])
 
     useEffect(() => {
         const storedCampaign = localStorage.getItem("selectedCampaign")
@@ -38,10 +41,21 @@ export function CampaignProvider({ children }: { children: ReactNode }) {
 
     const selectCampaign = (newCampaign: CampaignContext | null) => {
         setCampaign(newCampaign)
+
+        if(newCampaign) {
+            api.get("/api/campaign-sessions", {
+                params: {campaign_id: newCampaign.id}
+            }).then(res => {
+                console.log(res)
+                setSessions(res.data)
+            }).catch(err => {
+                console.log(err)
+            })
+        }
     }
 
     return (
-        <CampaignContext.Provider value={{campaign, selectCampaign}}>
+        <CampaignContext.Provider value={{campaign, selectCampaign, sessions}}>
             {children}
         </CampaignContext.Provider>
     )
