@@ -42,13 +42,15 @@ export const AddNoteDialog: React.FC<AddNoteDialogProps> = (props) => {
     // session_date: str
 
     return <Dialog open={props.open} onClose={props.handleClose}>
-        <div style={{padding:8, width: 580, overflow: "auto"}}>
+        <div style={{padding: 8, width: 580, overflow: "auto"}}>
             <FormControl fullWidth sx={{gap: 2}}>
-                <TextField label={"Note"} multiline={true} minRows={5} value={note} onChange={(e) => setNote(e.target.value)}/>
-                <TextField label={"Session Date"} type={"date"} slotProps={{inputLabel: {shrink:true}}} value={sessionDate} onChange={(e) => setSessionDate(e.target.value)}/>
+                <TextField label={"Note"} multiline={true} minRows={6} maxRows={6} value={note}
+                           onChange={(e) => setNote(e.target.value)}/>
+                <TextField label={"Session Date"} type={"date"} slotProps={{inputLabel: {shrink: true}}}
+                           value={sessionDate} onChange={(e) => setSessionDate(e.target.value)}/>
                 <RadioGroup value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
-                    <FormControlLabel control={<Radio />} label={"Private note"} value={"true"} />
-                    <FormControlLabel control={<Radio />} label={"Public note"} value={"false"} />
+                    <FormControlLabel control={<Radio/>} label={"Private note"} value={"true"}/>
+                    <FormControlLabel control={<Radio/>} label={"Public note"} value={"false"}/>
                 </RadioGroup>
                 <Button onClick={e => onSubmit(e as unknown as MouseEvent)}>Add</Button>
             </FormControl>
