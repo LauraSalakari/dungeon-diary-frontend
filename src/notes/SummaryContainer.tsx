@@ -33,7 +33,6 @@ export const SummaryContainer: React.FC<SummaryContainerProps> = (props) => {
         api.get("/api/session-summaries", {
             params: {campaign_id: campaign?.campaign?.id, session_date: dayjs(session).format("YYYY-MM-DD")},
         }).then(res => {
-            console.log(res)
             setSummaries(res.data)
         }).catch(err => {
             console.log(err)
@@ -55,7 +54,6 @@ export const SummaryContainer: React.FC<SummaryContainerProps> = (props) => {
             session_date: dayjs(session).format("YYYY-MM-DD"),
             contains_public: containPublic,
         }).then(res => {
-            console.log(res)
             setSummaries(prev => [...prev, {
                 content: res.data.summary_content,
                 contains_public: res.data.contains_public,

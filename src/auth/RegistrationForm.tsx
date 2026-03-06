@@ -1,35 +1,44 @@
+import * as React from "react"
 import {useState} from "react"
 import Button from "@mui/material/Button"
 import TextField from "@mui/material/TextField"
-import {useNavigate} from "react-router"
 import api from "./api.ts"
+import {FormControl} from "@mui/material"
 
-export const RegistrationForm = () => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
-    const [username, setUsername] = useState('')
+interface Props {
+    returnToLogin: () => void
+}
 
-    const navigate = useNavigate()
+export const RegistrationForm: React.FC<Props> = (props) => {
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [username, setUsername] = useState("")
 
-    const register = (e: MouseEvent) => {
+    const register = (e: SubmitEvent) => {
         e.preventDefault()
 
         api.post("/register", {
-            email: email, password: password, username: username
-        }).then((res) => {
-            console.log(res)
-            navigate("/")
+            email: email, password: password, username: username,
+        }).then(() => {
+            setEmail("")
+            setUsername("")
+            setPassword("")
+            props.returnToLogin()
         }).catch(err => console.log(err))
     }
 
-    return <div style={{display: "flex", flexDirection: "column", gap: 8, width: "30vw", minWidth: 250}}>
-        <TextField variant="filled" label="Email" value={email} aria-label={"Email"} onChange={(e) => setEmail(e.target.value)} />
-        <TextField variant="filled" label="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-        <TextField variant="filled" label="Password" value={password} onChange={(e) => setPassword(e.target.value)} type='password' />
-        <TextField variant="filled" label="Confirm password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}  type='password'/>
+    return <form onSubmit={e => register(e as unknown as SubmitEvent)}
+                 style={{display: "flex", flexDirection: "column", gap: 8, width: "30vw", minWidth: 250}}>
+        <FormControl style={{gap: 8}}>
+            <TextField variant="filled" label="Email" value={email} aria-label={"Email"}
+                       onChange={(e) => setEmail(e.target.value)}/>
+            <TextField variant="filled" label="Username" value={username}
+                       onChange={(e) => setUsername(e.target.value)}/>
+            <TextField variant="filled" label="Password" value={password} onChange={(e) => setPassword(e.target.value)}
+                       type="password"/>
+        </FormControl>
         <div style={{"display": "flex", justifyContent: "center"}}>
-            <Button variant="contained" onClick={e => register(e as unknown as MouseEvent)}>Register</Button>
+            <Button type={"submit"} variant="contained">Register</Button>
         </div>
-    </div>
+    </form>
 }

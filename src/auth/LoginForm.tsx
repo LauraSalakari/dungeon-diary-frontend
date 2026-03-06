@@ -6,12 +6,12 @@ import {useNavigate} from "react-router"
 import api from "./api.ts"
 
 export const LoginForm = () => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
 
     const navigate = useNavigate()
 
-    const login = (e: MouseEvent) => {
+    const login = (e: SubmitEvent) => {
         e.preventDefault()
 
         api.post("/login", {
@@ -19,15 +19,19 @@ export const LoginForm = () => {
             password: password,
         }).then(res => {
             setToken(res.data.access_token)
-            navigate("/home", { replace: true })
+            setEmail("")
+            setPassword("")
+            navigate("/home", {replace: true})
         }).catch(err => console.log(err))
     }
 
-    return <div style={{ display: "flex", flexDirection: "column", gap: 8, width: "30vw", minWidth: 250 }}>
-        <TextField variant="filled" label="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <TextField variant="filled" label="Password" value={password} onChange={(e) => setPassword(e.target.value)} type='password' />
+    return <form onSubmit={e => login(e as unknown as SubmitEvent)}
+                 style={{display: "flex", flexDirection: "column", gap: 8, width: "30vw", minWidth: 250}}>
+        <TextField variant="filled" label="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+        <TextField variant="filled" label="Password" value={password} onChange={(e) => setPassword(e.target.value)}
+                   type="password"/>
         <div style={{"display": "flex", justifyContent: "center"}}>
-            <Button variant="contained" onClick={e => login(e as unknown as MouseEvent)}>Log In</Button>
+            <Button variant="contained" type={"submit"}>Log In</Button>
         </div>
-    </div>
+    </form>
 }
