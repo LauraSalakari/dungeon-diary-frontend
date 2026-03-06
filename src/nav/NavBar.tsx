@@ -10,17 +10,20 @@ import {Tooltip} from "@mui/material"
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline"
 import {useState} from "react"
 import {AddCampaignDialog} from "./AddCampaignDialog.tsx"
+import {useAuth} from "../auth/AuthContext.tsx"
 
 export default function NavBar() {
     const navigate = useNavigate()
     const campaign = useCampaign()
-
+    const auth = useAuth()
+    const user = auth?.info?.user?.username
     const [dialogOpen, setDialogOpen] = useState<boolean>(false)
 
     const handleLogout = () => {
         removeToken()
-        localStorage.removeItem("selectedCampaign")
-        campaign?.selectCampaign(null)
+        campaign?.clearCampaignContext()
+        auth?.clearAuthContext()
+        auth?.changeAuthState("unauthenticated")
         navigate("/", {replace: true})
     }
 
@@ -30,7 +33,11 @@ export default function NavBar() {
                 <h1 style={{flexGrow: 1, marginTop: 8, marginBottom: 8}}
                     className={"bonheur-royale-regular"}>
                     Dungeon Diary
+                    {user && <span style={{fontSize: 20, fontFamily: "MedievalSharp", paddingLeft: 16}}>
+                    - {user}
+                </span>}
                 </h1>
+
                 <CampaignSelector/>
                 <Tooltip title={"Add campaign"}>
                     <IconButton

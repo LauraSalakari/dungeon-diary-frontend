@@ -5,12 +5,14 @@ import {setToken} from "./auth.ts"
 import {useNavigate} from "react-router"
 import api from "./api.ts"
 import {Typography} from "@mui/material"
+import {useAuth} from "./AuthContext.tsx"
 
 export const LoginForm = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [errorCode, setErrorCode] = useState<string | undefined>(undefined)
 
+    const auth = useAuth()
     const navigate = useNavigate()
 
     const login = (e: SubmitEvent) => {
@@ -21,6 +23,7 @@ export const LoginForm = () => {
             password: password,
         }).then(res => {
             setToken(res.data.access_token)
+            auth?.changeAuthState("authenticated")
             setEmail("")
             setPassword("")
             setErrorCode(undefined)

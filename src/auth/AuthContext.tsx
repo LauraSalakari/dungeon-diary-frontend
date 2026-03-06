@@ -18,34 +18,52 @@ interface AuthUser {
     campaigns: AuthCampaign[]
 }
 
+type AuthState = "authenticated" | "unauthenticated" | "loading"
+
 interface AuthContext {
     info: AuthUser | null,
-    loading: boolean,
+    authState: AuthState,
+    clearAuthContext: () => void,
+    changeAuthState: (newState: AuthState) => void,
 }
 
 const AuthContext = createContext<AuthContext | null>(null)
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({children}: { children: ReactNode }) {
     const [user, setUser] = useState<AuthUser | null>(null)
-    const [loading, setLoading] = useState(true)
+    const [authState, setAuthState] = useState<AuthState>("loading")
 
     useEffect(() => {
         const token = getToken()
 
         if (!token) {
             // eslint-disable-next-line react-hooks/set-state-in-effect
-            setLoading(false)
+            setAuthState("unauthenticated")
             return
         }
 
-        api.get('/api/user')
-            .then(res => {setUser(res.data as AuthUser)})
-            .catch(() => removeToken())
-            .finally(() => setLoading(false))
+        setAuthState("authenticated")
     }, [])
 
+    useEffect(() => {
+        api.get("/api/user").then(res => {
+            setUser(res.data as AuthUser)
+        }).catch(() => {
+            removeToken()
+            setAuthState("unauthenticated")
+        })
+    }, [authState])
+
+    const changeAuthState = (newState: AuthState) => {
+        setAuthState(newState)
+    }
+
+    const clearAuthContext = () => {
+        setUser(null)
+    }
+
     return (
-        <AuthContext.Provider value={{info: user, loading}}>
+        <AuthContext.Provider value={{info: user, clearAuthContext, authState, changeAuthState}}>
             {children}
         </AuthContext.Provider>
     )
