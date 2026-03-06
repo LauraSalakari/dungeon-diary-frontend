@@ -16,7 +16,7 @@ export const NoteContainer: React.FC = () => {
     const [noteMode, setNoteMode] = useState<"general" | "summary">("general")
 
     const handleTabChange = (_: React.SyntheticEvent, newValue: string) => {
-        setSelectedTab(newValue);
+        setSelectedTab(newValue)
     }
 
     const handleModeChange = (_: React.SyntheticEvent, newValue: "general" | "summary") => {
@@ -25,7 +25,7 @@ export const NoteContainer: React.FC = () => {
 
     return (
         <Box
-            sx={{flexGrow: 1, bgcolor: "background.paper", display: "flex", height: "100%"}}
+            sx={{flex: 1, display: "flex", height: "100%"}}
         >
             <Tabs
                 orientation="vertical"

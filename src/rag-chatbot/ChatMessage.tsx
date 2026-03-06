@@ -8,7 +8,10 @@ interface Props {
 }
 
 const chatBoxLlm = {
-    backgroundColor: "#96af95",
+    backgroundColor: "#1E1A21",
+    color: "#F0E6D2",
+    // backgroundColor: "#33261E",
+    // color: "#F2E6C9",
     borderRadius: "4px",
     maxWidth: "90%",
     marginBottom: "8px",
@@ -16,7 +19,10 @@ const chatBoxLlm = {
 }
 
 const chatBoxUser = {
-    backgroundColor: "#b6c7d7",
+    backgroundColor: "#5E4A7E",
+    color: "#F0E6D2",
+    // backgroundColor: "#4F6B5A",
+    // color: "#F2E6C9",
     borderRadius: "4px",
     maxWidth: "90%",
     marginBottom: "8px",
@@ -32,48 +38,48 @@ export default function ChatMessage(props: Props) {
             skipHtml
             rehypePlugins={[rehypeSanitize]}
             components={{
-                p: ({ children }) => (
-                    <Typography variant="body2" sx={{ mb: 1, margin: 0 }}>
+                p: ({children}) => (
+                    <Typography variant="body2" sx={{mb: 1, margin: 0}}>
                         {children}
                     </Typography>
                 ),
 
-                strong: ({ children }) => (
-                    <Box component="span" sx={{ fontWeight: 600 }}>
+                strong: ({children}) => (
+                    <Box component="span" sx={{fontWeight: 600}}>
                         {children}
                     </Box>
                 ),
 
-                em: ({ children }) => (
-                    <Box component="span" sx={{ fontStyle: 'italic' }}>
+                em: ({children}) => (
+                    <Box component="span" sx={{fontStyle: "italic"}}>
                         {children}
                     </Box>
                 ),
 
-                ul: ({ children }) => (
-                    <Box component="ul" sx={{ pl: 3, mb: 1 }}>
+                ul: ({children}) => (
+                    <Box component="ul" sx={{pl: 3, mb: 1}}>
                         {children}
                     </Box>
                 ),
 
-                ol: ({ children }) => (
-                    <Box component="ol" sx={{ pl: 3, mb: 1 }}>
+                ol: ({children}) => (
+                    <Box component="ol" sx={{pl: 3, mb: 1}}>
                         {children}
                     </Box>
                 ),
 
-                li: ({ children }) => (
+                li: ({children}) => (
                     <Typography
                         component="li"
                         variant="body2"
-                        sx={{ display: 'list-item' }}
+                        sx={{display: "list-item"}}
                     >
                         {children}
                     </Typography>
                 ),
-                h1: ({ children }) => <>{children}</>,
-                h2: ({ children }) => <>{children}</>,
-                h3: ({ children }) => <>{children}</>,
+                h1: ({children}) => <>{children}</>,
+                h2: ({children}) => <>{children}</>,
+                h3: ({children}) => <>{children}</>,
             }}
         >
             {m.content}

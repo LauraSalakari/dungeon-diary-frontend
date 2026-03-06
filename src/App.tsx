@@ -1,16 +1,17 @@
-import './App.css'
-import Chatbot from "./rag-chatbot/Chatbot.tsx";
+import "./App.css"
+import Chatbot from "./rag-chatbot/Chatbot.tsx"
 import NavBar from "./nav/NavBar.tsx"
-import {Home} from "./Home.tsx"
+import {NoteContainer} from "./notes/NoteContainer.tsx"
+import {Box} from "@mui/material"
 
 function App() {
-  return (
-    <>
-        <NavBar />
-        <Home />
-        <Chatbot />
-    </>
-  )
+    return (
+        <Box sx={{height: "100vh", display: "flex", flexDirection: "column"}}>
+            <NavBar/>
+            <NoteContainer/>
+            <Chatbot/>
+        </Box>
+    )
 }
 
 export default App
