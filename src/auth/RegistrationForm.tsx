@@ -13,7 +13,7 @@ export const RegistrationForm: React.FC<Props> = (props) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [username, setUsername] = useState("")
-    const [errorCode, setErrorCode] = useState<string|undefined>(undefined)
+    const [errorCode, setErrorCode] = useState<string | undefined>(undefined)
 
     const register = (e: SubmitEvent) => {
         e.preventDefault()
@@ -40,7 +40,7 @@ export const RegistrationForm: React.FC<Props> = (props) => {
             <TextField variant="filled" label="Username" value={username}
                        onChange={(e) => setUsername(e.target.value)}/>
             <TextField variant="filled" label="Password" value={password} onChange={(e) => setPassword(e.target.value)}
-                       type="password"/>
+                       type="password" autoComplete={"off"}/>
         </FormControl>
         {errorCode && <Typography variant="body2" color="error" component="p" style={{textAlign: "center"}}>
             Error logging in. ({errorCode})

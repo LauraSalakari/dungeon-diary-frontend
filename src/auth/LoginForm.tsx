@@ -9,7 +9,7 @@ import {Typography} from "@mui/material"
 export const LoginForm = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [errorCode, setErrorCode] = useState<string|undefined>(undefined)
+    const [errorCode, setErrorCode] = useState<string | undefined>(undefined)
 
     const navigate = useNavigate()
 
@@ -35,7 +35,7 @@ export const LoginForm = () => {
                  style={{display: "flex", flexDirection: "column", gap: 8, width: "30vw", minWidth: 250}}>
         <TextField variant="filled" label="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
         <TextField variant="filled" label="Password" value={password} onChange={(e) => setPassword(e.target.value)}
-                   type="password"/>
+                   type="password" autoComplete={"off"}/>
         {errorCode && <Typography variant="body2" color="error" component="p" style={{textAlign: "center"}}>
             Error logging in. ({errorCode})
         </Typography>}
