@@ -1,16 +1,17 @@
-import * as React from "react";
-import Popover from "@mui/material/Popover";
-import Fab from "@mui/material/Fab";
-import EditIcon from "@mui/icons-material/Edit";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import {Send} from "@mui/icons-material";
-import {IconButton} from "@mui/material";
+import * as React from "react"
+import Popover from "@mui/material/Popover"
+import Fab from "@mui/material/Fab"
+import EditIcon from "@mui/icons-material/Edit"
+import Card from "@mui/material/Card"
+import CardContent from "@mui/material/CardContent"
+import CardActions from "@mui/material/CardActions"
+import OutlinedInput from "@mui/material/OutlinedInput"
+import {Send} from "@mui/icons-material"
+import {IconButton} from "@mui/material"
 import ChatMessage from "./ChatMessage.tsx"
 import {getToken} from "../auth/auth.ts"
 import api from "../auth/api.ts"
+import TypingIndicator from "./TypingIndicator.tsx"
 
 export interface ChatMessageType {
     content: string;
@@ -21,20 +22,21 @@ export interface ChatMessageType {
 const firstMsg: ChatMessageType = {
     sender: "llm",
     content: "What would you like to know?",
-    timestamp: 0
+    timestamp: 0,
 }
 
 export default function Chatbot() {
-    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-    const [content, setContent] = React.useState<string>("");
-    const [messages, setMessages] = React.useState<ChatMessageType[]>([firstMsg]);
+    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
+    const [content, setContent] = React.useState<string>("")
+    const [messages, setMessages] = React.useState<ChatMessageType[]>([firstMsg])
+    const [typing, setTyping] = React.useState<boolean>(false)
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
+        setAnchorEl(event.currentTarget)
     }
 
     const handleClose = () => {
-        setAnchorEl(null);
+        setAnchorEl(null)
     }
 
     const open = Boolean(anchorEl)
@@ -47,16 +49,20 @@ export default function Chatbot() {
         if (!token) return
 
         setMessages(prev => {
-            return [...prev, {content, sender: "user", timestamp: Date.now()}];
+            return [...prev, {content, sender: "user", timestamp: Date.now()}]
         })
+
+        setTyping(true)
 
         api.post("/api/phb-rag", {
             q: content,
         }).then(res => {
+            setTyping(false)
             setMessages(prev => {
                 return [...prev, {content: res.data, sender: "llm", timestamp: Date.now()}]
             })
         }).catch(err => {
+            setTyping(false)
             console.log(err)
         })
 
@@ -94,9 +100,12 @@ export default function Chatbot() {
                     <CardContent sx={{width: "300px", maxHeight: "400px", overflow: "auto"}}
                                  className="chat-messages-box">
                         {messages.map((m) => (
-                            <ChatMessage m={m} key={m.timestamp} />
+                            <ChatMessage m={m} key={m.timestamp}/>
                         ))}
                     </CardContent>
+                    {typing && <div style={{marginLeft: 12}}>
+                        <TypingIndicator/>
+                    </div>}
                     <CardActions>
                         <OutlinedInput
                             value={content}
