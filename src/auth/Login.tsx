@@ -11,11 +11,22 @@ export const Login: React.FC = () => {
     return <div className="login" style={{
         minHeight: "100dvh",
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        flexDirection: "column",
     }}>
-        <div style={{display: "inline-flex", flexDirection: "column", justifyContent: "center"}}>
+
+        <div style={{
+            display: "inline-flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            textAlign: "center",
+            marginBottom: 100,
+        }}>
+            <h1 style={{flexGrow: 1, marginTop: 8, marginBottom: 32}}
+                className={"bonheur-royale-regular"}>
+                Dungeon Diary
+            </h1>
             {loginState ? <LoginForm/> : <RegistrationForm returnToLogin={() => {
                 setLoginState(true)
             }}/>}
